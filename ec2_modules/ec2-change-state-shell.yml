@@ -1,0 +1,11 @@
+- hosts: localhost
+  gather_facts: yes
+  # vars:
+  #   ansible_python_interpreter: /usr/bin/python3  #workaround
+  tasks:
+    - name: Change instance state by tag
+      ec2: # the only way to make env vars to work [some bug]
+      args:
+        state: running
+        instance_tags:
+          Name: Demo
