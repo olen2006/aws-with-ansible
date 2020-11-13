@@ -10,7 +10,7 @@
         aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
         ec2_region: "{{ AWS_REGION }}"
         instance_type: t2.micro
-        keypair:  insert_key  #####
+        keypair:  aws-ansible-key  #####
         image: ami-11111111   #####
         assign_public_ip:
         vpc_subnet_ip:
