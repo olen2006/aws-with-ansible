@@ -1,8 +1,8 @@
 --- #
-- hosts:
+- hosts: localhost
   gather_facts: no
   vars_files:
-    - keys.yaml
+    - keys.yml
   tasks:
     - name: Provision instance
       ec2: 
@@ -10,27 +10,28 @@
         aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
         ec2_region: "{{ AWS_REGION }}"
         instance_type: t2.micro
-        keypair:  aws-ansible-key  #####
-        image: ami-11111111   #####
-        assign_public_ip:
-        vpc_subnet_ip:
-        group: demoSG
+        key_name:  aws-ansible-key  # from aws ec2 console
+        image: ami-0947d2ba12ee1ff75   # from aws ec2 console #amazon-linux-2
+        assign_public_ip: yes
+        vpc_subnet_id: subnet-084a233a07dcbb4ee  #from aws VPC console # can be pulled from ansible facts
+        group: demoSG # from aws console
         wait: true
-        exact_count: 1
+        exact_count: 1 # how many do you want to exist when the book is done running
         count_tag:
           Name: Demo
-        instance_tags:
+        instance_tags: # assigning tags to ec2
           Name: Demo
-      register: ec2
+      register: ec2 # register the output of ec2 module
     - debug:
         var: ec2
+      
 
     - name: add host to inventory
       add_host:
         hostname: '{{ item.public_ip }}'
         groupname: demogroup
         ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
-        ansible_ssh_private_key_file: /home/ansible/insert_key   ####
+        ansible_ssh_private_key_file: /home/ansible/aws-ansible-key.pem   ####
       loop: '{{ ec2.instances }}'
 
 - hosts: demogroup
