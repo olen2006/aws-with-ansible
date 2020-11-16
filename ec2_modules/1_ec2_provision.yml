@@ -1,8 +1,10 @@
---- #
+--- # Launching EC2 instance in AWS environment
 - hosts: localhost
   gather_facts: no
   vars_files:
     - keys.yml
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Provision instance
       ec2: 
@@ -13,8 +15,8 @@
         key_name:  aws-ansible-key  # from aws ec2 console
         image: ami-0947d2ba12ee1ff75   # from aws ec2 console #amazon-linux-2
         assign_public_ip: yes
-        vpc_subnet_id: subnet-084a233a07dcbb4ee  #from aws VPC console # can be pulled from ansible facts
-        group: demoSG # from aws console
+        vpc_subnet_id: subnet-0d6afd6195a2c76f3  #from aws VPC console # can be pulled from ansible facts
+        group: default #demoSG # from aws console
         wait: true
         exact_count: 1 # how many do you want to exist when the book is done running
         count_tag:

@@ -1,3 +1,4 @@
+--- #Stopping instance based on the tag Name: Demo
 - hosts: localhost
   gather_facts: yes
   vars_files:
