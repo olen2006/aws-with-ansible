@@ -1,8 +1,10 @@
---- #
+--- # Deleting EC2 by providing instancce ID ec2_facts.instances[0].instance_id
 - hosts: localhost
   gather_facts: no
   vars_files:
     - keys.yml
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Get Demo Instance
       ec2_instance_facts: 
@@ -14,8 +16,9 @@
       register: ec2_facts
     - debug:
         var: ec2_facts.instances[0].instance_id
+
     - name: remove tags
-      ec2-tag:
+      ec2_tag:
         aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
         aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
         ec2_region: "{{ AWS_REGION }}"
@@ -23,6 +26,10 @@
         tags:
           Name:
         state: absent
+      # register: ec2_tags
+      # debug:
+      #   msg: '{{ec2_tags.tags.Name}}'
+
     - name: Terminate instances
       ec2:
         aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
