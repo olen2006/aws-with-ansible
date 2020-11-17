@@ -1,0 +1,15 @@
+--- # AMI
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - keys.yml
+  tasks:
+    - name: Create new AMI
+      ec2_ami: 
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        ec2_region: "{{ AWS_REGION }}"
+        instance_id: #provide instance id here 
+        name: MyNewAMI # if name already exist it will error out 
+        #wait: yes  #handy in case we want to do something with it right away.
+        state: present
