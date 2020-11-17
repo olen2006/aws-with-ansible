@@ -3,8 +3,6 @@
   gather_facts: no
   vars_files:
     - keys.yml
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Provision instance
       ec2: 
@@ -15,10 +13,10 @@
         key_name:  aws-ansible-key  # from aws ec2 console
         image: ami-0947d2ba12ee1ff75   # from aws ec2 console #amazon-linux-2
         assign_public_ip: yes
-        vpc_subnet_id: subnet-0d6afd6195a2c76f3  #from aws VPC console # can be pulled from ansible facts
+        vpc_subnet_id: subnet-09b78fa9b2aad6535  #from aws VPC console # can be pulled from ansible facts
         group: default #demoSG # from aws console
         wait: true
-        exact_count: 1 # how many do you want to exist when the book is done running
+        exact_count: 2 # how many do you want to exist when the book is done running
         count_tag:
           Name: Demo
         instance_tags: # assigning tags to ec2
