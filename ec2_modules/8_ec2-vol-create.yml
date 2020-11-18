@@ -1,0 +1,18 @@
+--- # AWS ec2_vol Example
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - keys.yml
+  tasks:
+    - name: Create new EBS Volume
+      ec2_vol: 
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        ec2_region: "{{ AWS_REGION }}"
+        zone: us-east-1f
+        volume_size: "1"
+        name: "web_volume"
+        device_name: /dev/xvdf # sometimes  it can be overwritten by OS. (redhat and Centos should be fine)
+      register: vol_info
+    - debug:
+        var: vol_info

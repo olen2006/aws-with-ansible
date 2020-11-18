@@ -1,0 +1,29 @@
+--- # AWS Module creating alars for CloudWatch Example (add | remove alarm)
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - keys.yml
+  tasks:
+    - name: remove alarm
+      ec2_metric_alarm: 
+        name: "cpu-high"
+        state: absent #if it won't find it it won't do anything
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        ec2_region: "{{ AWS_REGION }}"
+    - name: create alarm 
+      ec2_metric_alarm:
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        ec2_region: "{{ AWS_REGION }}"
+        state: present
+        name: "cpu-high-alert"
+        metric: "CPUUtilization"
+        namespace: "AWS/EC2"
+        statistic: Average
+        comparison: ">=" # greater or equl to 90%
+        threshold: 90.0
+        period: 300 # every 5 min collect info
+        evaluation_periods: 3 #
+        unit: "Percent"
+        dimensions: { 'InstanceId':'i-02ea0b0b19d007bd1' }
