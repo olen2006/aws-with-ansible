@@ -1,0 +1,29 @@
+--- # AWS Module exampe ec2_tag
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - keys.yml
+
+  tasks:
+    - name: Gather tags
+      ec2_tag:  #gathering info about aws ec2 instances
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        ec2_region: "{{ AWS_REGION }}"
+        state: list # lists existing tags 
+        resource: #insert ec2 id 
+      register: tags
+    - name: Display tags 
+      debug:
+        var: tags.tags
+    - name: Add tags to resource
+      ec2_tag:
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        ec2_region: "{{ AWS_REGION }}"
+        state: present # adding tags 
+        resource: snapshot id 
+        tags: 
+          system: erp
+          version: 1.2
+        
