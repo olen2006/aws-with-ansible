@@ -1,0 +1,29 @@
+--- # AWS EC2 module Removing old key, creating new key, saving this key locally.
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - keys.yml
+  tasks:
+    - name: Remove old key
+      ec2_key: 
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        ec2_region: "{{ AWS_REGION }}"
+        name: aws-ansible-test
+        state: absent
+    - name: Create a new EC2 keypair
+      ec2_key:
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        ec2_region: "{{ AWS_REGION }}"
+        name: aws-ansible-test
+        state: present #by default it wqill assume present
+      register: keypair 
+    - debug: 
+        var: keypair
+    - name: write new private key to file locally
+      lineinfile:
+        create: yes
+        path: /home/ansible/aws-ansible-test.pem
+        line: "{{ keypair.key.private_key }}"
+        mode: 0600
