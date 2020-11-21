@@ -1,0 +1,26 @@
+--- # AWS module Example ec2_snapshot_facts
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - keys.yml
+  tasks:
+    - name: Gather snapshot facts
+      ec2_snapshot_info: 
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        ec2_region: "{{ AWS_REGION }}"
+        filters:
+          owner-id: "{{ AWS_OWNER }}" # 0282517882147 # "{{ AWS_OWNER }}"
+      register: ec2_snapshot_info
+
+    - name: Create Volume Snapshot
+      ec2_snapshot:
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        ec2_region: "{{ AWS_REGION }}"
+        instance_id: i-06eb500b8dc3e7551
+        device_name: /dev/sdf # /dev/xvdf  since vol was renamed xvdf won't work.
+        state: present 
+        description: "On demand Volume backup."
+    - debug:
+        var: ec2_snapshot_info

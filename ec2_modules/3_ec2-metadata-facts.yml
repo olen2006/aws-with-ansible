@@ -48,16 +48,16 @@
   tasks:
     - name: Check out gathered facts
       debug:
-        var: hostvars[groups['demogroup'][0]]['ansible_ec2_instance_id']
-      loop: "{{ groups['demogroup'] }}" # we can loop through using with_items: "{{ groups['demogroup'] }}"
+        var: hostvars[item]['ansible_ec2_instance_id'] 
+      loop: "{{ groups['demogroup'] }}" 
 
-    - name: Change instance state by tag 
-      ec2:
-        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
-        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
-        ec2_region: "{{ AWS_REGION }}"
-        state: stopped     
-        instance_tags:
-          Name: Demo 
-      register: ec2
+    # - name: Change instance state by tag 
+    #   ec2:
+    #     aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+    #     aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+    #     ec2_region: "{{ AWS_REGION }}"
+    #     state: stopped     
+    #     instance_tags:
+    #       Name: Demo 
+    #   register: ec2
 
