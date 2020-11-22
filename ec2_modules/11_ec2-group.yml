@@ -1,0 +1,30 @@
+--- #AWS EC2 module example on how to create ec2 Security Groups
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - keys.yml
+
+  tasks:
+    - name: Create new Security Group 
+      ec2_group:
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        ec2_region: "{{ AWS_REGION }}"
+        name: demoSG
+        description: An example of EC2 SG 
+        vpc_id: vpc-0e5b2ebeca2d0eeed
+        rules:
+          - proto: tcp 
+            ports:
+              - 80
+              - 443
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 66.222.167.242/32
+        rules_egress:
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
