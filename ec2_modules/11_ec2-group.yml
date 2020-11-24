@@ -12,7 +12,7 @@
         ec2_region: "{{ AWS_REGION }}"
         name: demoSG
         description: An example of EC2 SG 
-        vpc_id: vpc-0e5b2ebeca2d0eeed
+        vpc_id: vpc-0614b8524e5ba7dea
         rules:
           - proto: tcp 
             ports:
